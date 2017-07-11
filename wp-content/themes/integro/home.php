@@ -1,42 +1,18 @@
 <?php get_header(); ?>
-  <section>
-    <h1><?php the_title(); ?></h1>
+  <?php wp_nav_menu( array( 'theme_location' => 'new-menu', 'container_class' => 'main_menu' ) ); ?>
 
-    <textarea rows="22" cols="50" id="content-request">
+  <?php if(dynamic_sidebar('description_area')) : else :endif; ?>
+
+
+  <section id="operation-area">
+    <textarea rows="22" cols="50" id="content-request" class="d-inline">
     </textarea>
 
-    <button id="send-button" onclick="send()">Send</button>
+    <button id="send-button" onclick="send()" class="d-inline">Send</button>
 
-    <div id="content-response">
+    <div id="content-response" class="d-inline">
        
     </div>
   </section>
 
 <?php get_footer(); ?>
-
-<script>
-    
-    function send () {
-        var content = document.getElementById('content-request').value;
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-            if(this.readyState == 4 && this.status == 200){
-                onResponse(this);
-            }
-        };
-        xhttp.open('POST','http://localhost:8000/api/operation', true);
-        xhttp.send(content);
-    }
-
-    function onResponse(response){
-        var content = response.response.split(' ');
-        display = '<ul>';
-        content.forEach(digit => {
-            if(+digit !== 0){
-                display = display + '<li>' + digit + '</li>';
-            }
-        });
-        displat = display + '</ul>';
-        document.getElementById('content-response').innerHTML = display;
-    }
-</script>
